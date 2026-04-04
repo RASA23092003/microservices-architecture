@@ -1,0 +1,25 @@
+Add medicines to Customer Cart : POST request
+url : http://localhost:6300/epharmacy/cart-api/cart/add-medicine/1020/customer/101
+Request Body:
+{
+"quantity": 2
+}
+----------------------------------------------------------------------------
+
+Get medicines from customer's cart : GET Request
+url : http://localhost:6300/epharmacy/cart-api/cart/medicines/customer/101
+---------------------------------------------------------------------------
+
+Update Quantity of Medicine in cart : PUT Request
+url : http://localhost:6300/epharmacy/cart-api/cart/update-quantity/medicine/1020/customer/101
+RequestBody: 13
+----------------------------------------------------------------------------
+
+Delete medicine from Cart : DELETE Request
+url : http://localhost:6300/epharmacy/cart-api/cart/delete-medicine/1011/customer/101
+----------------------------------------------------------------------------------
+
+Delete All medicines from Cart : DELETE Request
+cart/delete-medicines/customer/{customerId}
+url : http://localhost:6300/epharmacy/cart-api/cart/delete-medicines/customer/101
+------------------------------------------------------------------------------------
