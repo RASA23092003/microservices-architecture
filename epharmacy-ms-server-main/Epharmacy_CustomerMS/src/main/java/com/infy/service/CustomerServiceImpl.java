@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infy.dto.ChangePasswordDTO;
 import com.infy.dto.CustomerAddressDTO;
 import com.infy.dto.CustomerDTO;
@@ -24,6 +26,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private ObjectMapper objectMapper;
+	@Autowired
+	private Environment environment;
 
 	
 	@Override
@@ -78,8 +84,17 @@ public class CustomerServiceImpl implements CustomerService {
 	// This method will add a new customer
 	@Override
 	public String registerNewCustomer(CustomerDTO customerDTO) throws EPharmacyException, NoSuchAlgorithmException {
-		//write your logic here
-		return null;
+		Customer customer=customerRepository.findByCustomerEmailId(customerDTO.getCustomerEmailId());
+		if(customer!=null) throw new EPharmacyException("CustomerService.CUSTOMER_ALREADY_EXISTS");
+		if((LocalDate.now().getDayOfYear()-customerDTO.getDateOfBirth().getDayOfYear())<18){
+			throw new EPharmacyException("CustomerService.CUSTOMER_AGE_INVALID");
+		}
+		Customer customerEntity=objectMapper.convertValue(customerDTO, Customer.class);
+		String hashedPassword = HashingUtility.getHashValue(customer.getPassword());
+		customerEntity.setPassword(hashedPassword);
+		Integer customerId=customerRepository.save(customerEntity).getCustomerId();
+		String successMessage=environment.getProperty("CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS1"+"CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS2"+" "+customerId);
+		return successMessage;
 	}
 
 	@Override

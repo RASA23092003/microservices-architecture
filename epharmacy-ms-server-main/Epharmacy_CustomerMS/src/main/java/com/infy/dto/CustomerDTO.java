@@ -2,17 +2,27 @@ package com.infy.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 //Write the necessary annotations to validate the fields 
 public class CustomerDTO {
-
 	private Integer customerId;
+	@Pattern(regexp="^[A-Za-z]+(//s[A-Za-z]+)*$",message = "{customer.name.invalid}")
 	private String customerName;
+	@Email(message ="{customer.email.invalid}")
 	private String customerEmailId;
+	@Pattern(regexp="^[6-7][0-9]{9}$",message="{customer.mobile.invalid}")
 	private String contactNumber;
+	@NotNull(message="{customer.password.invalid}")
 	private String password;
+	@Pattern(regexp = "^(Male|Female|Other)",message="{customer.gender.invalid}")
 	private String gender;
+	@NotNull(message = "{customer.dob.required}")
 	private LocalDate dateOfBirth;
-
+	@Valid
 	private List<CustomerAddressDTO> addressList;
 	
 	private PrimePlansDTO plan;

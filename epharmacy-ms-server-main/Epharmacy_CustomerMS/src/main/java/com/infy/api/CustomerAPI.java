@@ -2,6 +2,8 @@ package com.infy.api;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,10 @@ public class CustomerAPI {
 		return new ResponseEntity<>(customerDTOFromDB, HttpStatus.OK);
 	}
 	
-	public ResponseEntity<String> registerCustomer(CustomerDTO customerDTO) throws Exception {
-		//write your logic here
-		return null;
+	@PostMapping("/customer/register")
+	public ResponseEntity<String> registerCustomer(@RequestBody @Valid CustomerDTO customerDTO) throws Exception {
+		String successMessage=customerService.registerNewCustomer(customerDTO);
+		return new ResponseEntity<>(successMessage,HttpStatus.OK);
 	}
 
 	

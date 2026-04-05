@@ -1,15 +1,27 @@
 package com.infy.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 //Write the necessary annotations to validate the fields 
 public class CustomerAddressDTO {
 	
 	private Integer addressId;
+	@Pattern(regexp = "(Home|Work)",message="{address.name.notpresent}")
+	@NotNull(message = "{address.name.invalid}")
 	private String addressName;
+	@NotNull(message="{address.line1.notpresent}")
 	private String addressLine1;
 	private String addressLine2;
 	private String area;
+	@NotNull(message = "{address.city.notpresent}")
+	@Pattern(regexp="[a-zA-Z]+(//s[a-zA-Z])*$",message="{address.city.invalid}")
 	private String city;
+	@NotNull(message = "{address.state.notpresent}")
+	@Pattern(regexp="[a-zA-Z]+(//s[a-zA-Z])*$",message="{address.state.invalid}")
 	private String state;
+	@NotNull(message = "{address.pincode.notpresent}")
+	@Pattern(regexp = "[0-9]{6}",message="address.pincode.invalid")
 	private String pincode;
 	
 	public CustomerAddressDTO() {
