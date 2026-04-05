@@ -1,2 +1,1 @@
-# microservices-architecture
-This Repository contains Micro Services Projects
+This is a microservice based project using java and springboot
