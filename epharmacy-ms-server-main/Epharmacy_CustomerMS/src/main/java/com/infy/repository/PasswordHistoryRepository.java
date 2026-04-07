@@ -10,6 +10,6 @@ import com.infy.entity.PasswordHistory;
 
 public interface PasswordHistoryRepository extends CrudRepository<PasswordHistory, Integer>{
 	//Write the appropriate methods if required
-	@Query("Select p from passwordhistory p where p.customerId=:customerId")
+	@Query("Select p from PasswordHistory p where p.customerId=:customerId")
 	List<PasswordHistory> findByCustomer(@Param("customerId")int customerId);
 }

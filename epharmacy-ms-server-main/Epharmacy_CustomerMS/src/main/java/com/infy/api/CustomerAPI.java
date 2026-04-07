@@ -25,7 +25,7 @@ import com.infy.dto.CustomerDTO;
 import com.infy.exception.EPharmacyException;
 import com.infy.service.CustomerService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @CrossOrigin
@@ -54,20 +54,20 @@ public class CustomerAPI {
 	}
 
 	@GetMapping("/customer/{customerId}")
-	public ResponseEntity<CustomerDTO> viewCustomer(@RequestParam Integer customerId) throws EPharmacyException {
+	public ResponseEntity<CustomerDTO> viewCustomer(@PathVariable Integer customerId) throws EPharmacyException {
 		CustomerDTO customer=customerService.viewCustomer(customerId);
 		return new ResponseEntity<>(customer,HttpStatus.OK);
 	}
 	
 	@GetMapping(" /customer/view-addresses/{customerId}")
-	public ResponseEntity<List<CustomerAddressDTO>> viewAllAddress(@RequestParam Integer customerId)
+	public ResponseEntity<List<CustomerAddressDTO>> viewAllAddress(@PathVariable Integer customerId)
 			throws EPharmacyException {
 		List<CustomerAddressDTO> addresslist=customerService.viewAllAddress(customerId);
 		return new ResponseEntity<>(addresslist,HttpStatus.OK);
 	}
 
 	@PostMapping("/customer/add-address/{customerId}")
-	public ResponseEntity<String> addAddress(@RequestBody @Valid CustomerAddressDTO caDTO,@RequestParam Integer customerId) throws EPharmacyException {
+	public ResponseEntity<String> addAddress(@RequestBody @Valid CustomerAddressDTO caDTO,@PathVariable Integer customerId) throws EPharmacyException {
 		customerService.addCustomerAddress(caDTO, customerId);
 		String successMessage=environment.getProperty("CustomerAPI.ADDRESS_ADDED_SUCCESS");
 		return new ResponseEntity<>(successMessage,HttpStatus.CREATED);
@@ -80,7 +80,7 @@ public class CustomerAPI {
 	}
 
 	@DeleteMapping("/customer/delete-address/{customerId}")
-	public ResponseEntity<String> deleteAddress(@RequestParam Integer addressId) throws EPharmacyException {
+	public ResponseEntity<String> deleteAddress(@PathVariable Integer addressId) throws EPharmacyException {
 		customerService.deleteAddress(addressId);
 		String successMsg=environment.getProperty("CustomerAPI.DELETE_CUSTOMER_ADDRESS_SUCCESS");
 		return new ResponseEntity<>(successMsg,HttpStatus.OK);

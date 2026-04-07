@@ -11,7 +11,9 @@ spring:
       ddl-auto: update
   cloud:
     consul:
+      host: localhost
       discovery: 
+        enabled: true
         hostname: localhost
 server:
   port: 6100
