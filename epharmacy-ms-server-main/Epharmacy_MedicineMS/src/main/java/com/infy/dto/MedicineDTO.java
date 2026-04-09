@@ -1,18 +1,27 @@
 package com.infy.dto;
 
 import java.time.LocalDate;
+
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 //Write the necessary annotations to validate the fields 
 public class MedicineDTO {
 	
 	private Integer medicineId;
+	@NotNull(message = "{medicine.name.notPresent}")
 	private String medicineName;
-	
+	@NotNull(message = "{medicine.manufacturer.notpresent}")
 	private String manufacturer;
+	@Min(value = 1,message = "{medicine.price.notpresent}")
+	@NotNull(message = "{medicine.price.notpresent}")
 	private Integer price;
 	private Integer discountPercent;
 	
 	private LocalDate manufacturingDate;
-	
+	@NotNull(message = "{medicine.expirydate.notpresent}")
+	@Future(message = "{medicine.expirydate.invalid}")
 	private LocalDate expiryDate;
 	
 	private String category;

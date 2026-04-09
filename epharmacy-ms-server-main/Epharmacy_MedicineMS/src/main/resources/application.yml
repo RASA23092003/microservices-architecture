@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: EPharmacy_MedicineMS
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    consul:
+      discovery:
+        hostname: localhost
+server:
+  port: 6200

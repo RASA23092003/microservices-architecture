@@ -9,6 +9,16 @@
             "projectName": "Epharmacy_CustomerMS",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MedicineMSApplication<Epharmacy_MedicineMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.MedicineMSApplication",
+            "projectName": "Epharmacy_MedicineMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

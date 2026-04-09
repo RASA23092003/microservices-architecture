@@ -11,8 +11,19 @@ url : http://localhost:6200/epharmacy/medicine-api/medicines/category/Allopathy
 ---------------------------------------------------------------------------------
 
 Update medicine stock : PUT Request
-url : http://localhost:6200/epharmacy/medicine-api/medicines/update-stock/medicine/1012
-RequestBody
+url : http://localhost:6200/epharmacy/medicine-api/medicines/update-stock/1012/2
+
+
+url : http://localhost:6200/epharmacy/medicine-api/medicines/addmedicine
+requestBody
+
 {
-	"orderedQuantity":2
+    "medicineName": "Augmentin 626 Duo Tablet",
+    "manufacturer": "Glaxo SmithKline Pharmaceuticals Ltd",
+    "price": 240,
+    "discountPercent": 15,
+    "manufacturingDate": "2022-02-20",
+    "expiryDate": "2022-02-25",
+    "category": "Allopathy",
+    "quantity": 20
 }
