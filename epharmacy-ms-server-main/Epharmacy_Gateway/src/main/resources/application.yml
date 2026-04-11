@@ -1,0 +1,27 @@
+server:
+ port: 6000
+
+spring:
+  application:
+    name: Epharmacy_Gateway
+  cloud:
+    consul:
+      discovery:
+        register: true
+        hostname: localhost
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: EPharmacy_CustomerMS
+          uri: lb://EPharmacy-CustomerMS
+          predicates:
+            - Path=/epharmacy/customer-api/**
+        - id: EPharmacy_MedicineMS
+          uri: lb://EPharmacy_MedicineMS
+          predicates:
+            - Path=/epharmacy/medicine-api/medicines/**
+         
+      
+          

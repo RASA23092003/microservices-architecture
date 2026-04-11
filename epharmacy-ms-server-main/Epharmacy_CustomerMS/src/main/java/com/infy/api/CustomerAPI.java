@@ -59,7 +59,7 @@ public class CustomerAPI {
 		return new ResponseEntity<>(customer,HttpStatus.OK);
 	}
 	
-	@GetMapping(" /customer/view-addresses/{customerId}")
+	@GetMapping("/customer/view-addresses/{customerId}")
 	public ResponseEntity<List<CustomerAddressDTO>> viewAllAddress(@PathVariable Integer customerId)
 			throws EPharmacyException {
 		List<CustomerAddressDTO> addresslist=customerService.viewAllAddress(customerId);

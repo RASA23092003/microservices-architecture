@@ -15,5 +15,10 @@ spring:
       discovery: 
         enabled: true
         hostname: localhost
+        register: true
+        service-name: EPharmacy_CustomerMS
+  
 server:
   port: 6100
+  servlet:
+    context-path: /epharmacy

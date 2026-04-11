@@ -19,6 +19,16 @@
             "projectName": "Epharmacy_MedicineMS",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EpharmacyGatewayApplication<Epharmacy_Gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.EpharmacyGatewayApplication",
+            "projectName": "Epharmacy_Gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
