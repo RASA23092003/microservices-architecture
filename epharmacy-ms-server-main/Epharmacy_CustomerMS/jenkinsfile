@@ -28,7 +28,7 @@ pipeline{
         stage('Maven Build phase'){
             steps{
                 dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
-                    bat 'mvn clean install -DskipTests=true'
+                    bat 'mvn clean package -DskipTests'
                 }
             }
         }
