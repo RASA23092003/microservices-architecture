@@ -1,5 +1,5 @@
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
-COPY target/*.jar app.jar
+COPY target/app.jar app.jar
 EXPOSE 6100
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-Xms256m","-Xmx512m","-jar","app.jar"]
