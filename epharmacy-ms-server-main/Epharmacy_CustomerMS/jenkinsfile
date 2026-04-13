@@ -1,23 +1,30 @@
 pipeline{
     agent any
+
     tools{
         maven 'maven_built_tool'
     }
+
     environment{
         DOCKER_IMAGE='epharmacy-customer'
         CONTAINER_NAME='customer-container'
+        NETWORK_NAME='epharmacy-network'
     }
+
     stages{
+
         stage('git clone'){
             steps{
                 git branch: 'epharmacy', credentialsId: 'github_credential', url: 'https://github.com/RASA23092003/microservices-architecture.git'
             }
         }
+
         stage('list files'){
             steps{
                 bat 'dir'
             }
         }
+
         stage('junit test'){
             steps{
                 dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
@@ -25,6 +32,7 @@ pipeline{
                 }
             }
         }
+
         stage('Maven Build phase'){
             steps{
                 dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
@@ -32,14 +40,7 @@ pipeline{
                 }
             }
         }
-        stage('List Files') {
-            steps {
-                dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
-                bat 'dir'
-                }
-            }
-        }
-        
+
         stage('Docker Image creation phase'){
             steps{
                 dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
@@ -47,18 +48,58 @@ pipeline{
                 }
             }
         }
-         stage('Delete old Docker container'){
+
+        // ✅ Create Network (safe)
+        stage('Create Docker Network'){
             steps{
-                dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
-                    bat 'docker rm -f %CONTAINER_NAME% || echo not exists'
-                }
+                bat 'docker network inspect %NETWORK_NAME% >nul 2>&1 || docker network create %NETWORK_NAME%'
             }
         }
+
+        // ✅ Start Consul
+        stage('Start Consul'){
+            steps{
+                bat 'docker rm -f consul || echo not exists'
+                bat '''
+                docker run -d --name consul --network %NETWORK_NAME% ^
+                -p 8500:8500 ^
+                hashicorp/consul agent -dev -client=0.0.0.0
+                '''
+            }
+        }
+
+        // ✅ Start MySQL
+        stage('Start MySQL'){
+            steps{
+                bat 'docker rm -f mysql || echo not exists'
+                bat '''
+                    docker run -d --name mysql --network %NETWORK_NAME% ^
+                    -e MYSQL_ROOT_PASSWORD=root ^
+                    -e MYSQL_DATABASE=EPHARMACY_CUSTOMERMS_DB ^
+                    -p 3307:3306 mysql:8
+                    '''
+            }
+        }
+
+        // ✅ Delete old app container
+        stage('Delete old Docker container'){
+            steps{
+                bat 'docker rm -f %CONTAINER_NAME% || echo not exists'
+            }
+        }
+
+        // ✅ Run your Spring Boot container
         stage('Docker container run phase'){
             steps{
-                dir('epharmacy-ms-server-main/Epharmacy_CustomerMS'){
-                    bat 'docker run -d -p 8081:6100 --name %CONTAINER_NAME% %DOCKER_IMAGE%:%BUILD_NUMBER%'
-                }
+                bat '''
+                docker run -d --name %CONTAINER_NAME% --network %NETWORK_NAME% ^
+                -p 8081:6100 ^
+                -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/EPHARMACY_CUSTOMERMS_DB ^
+                -e SPRING_DATASOURCE_USERNAME=root ^
+                -e SPRING_DATASOURCE_PASSWORD=root ^
+                -e SPRING_CLOUD_CONSUL_HOST=consul ^
+                %DOCKER_IMAGE%:%BUILD_NUMBER%
+                '''
             }
         }
     }
