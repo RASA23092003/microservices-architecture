@@ -8,7 +8,8 @@
             "mainClass": "com.infy.CustomerMSApplication",
             "projectName": "Epharmacy_CustomerMS",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=55061 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_CustomerMS"
         },
         {
             "type": "java",
@@ -18,7 +19,8 @@
             "mainClass": "com.infy.MedicineMSApplication",
             "projectName": "Epharmacy_MedicineMS",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=54757 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_MedicineMS"
         },
         {
             "type": "java",
@@ -27,6 +29,17 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.infy.EpharmacyGatewayApplication",
             "projectName": "Epharmacy_Gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=52295 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_Gateway"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CartMSApplication<Epharmacy_CartMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.CartMSApplication",
+            "projectName": "Epharmacy_CartMS",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

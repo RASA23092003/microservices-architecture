@@ -14,14 +14,19 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: EPharmacy_CustomerMS
+        - id: EPharmacy-CustomerMS
           uri: lb://EPharmacy-CustomerMS
           predicates:
             - Path=/epharmacy/customer-api/**
-        - id: EPharmacy_MedicineMS
-          uri: lb://EPharmacy_MedicineMS
+        - id: EPharmacy-MedicineMS
+          uri: lb://EPharmacy-MedicineMS
           predicates:
             - Path=/epharmacy/medicine-api/medicines/**
+        - id: Epharmacy-CartMS
+          uri: lb://Epharmacy-CartMS
+          predicates:
+            - Path=/epharmacy/cart-api/**
+            
          
       
           
