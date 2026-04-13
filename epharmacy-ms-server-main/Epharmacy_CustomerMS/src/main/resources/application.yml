@@ -2,21 +2,22 @@ spring:
   application:
     name: EPharmacy_CustomerMS
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://host.docker.internal:3306/EPHARMACY_CUSTOMERMS_DB
+    url: jdbc:mysql://mysql:3306/EPHARMACY_CUSTOMERMS_DB
   jpa:
     hibernate:
       ddl-auto: update
   cloud:
     consul:
-      host: localhost
+      host: consul
+      port: 8500
       discovery: 
         enabled: true
-        hostname: localhost
         register: true
-        service-name: EPharmacy_CustomerMS
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
   
 server:
   port: 6100

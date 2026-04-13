@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+  consul:
+    image: hashicorp/consul
+    container_name: consul
+    ports:
+      - "8500:8500"
+    command: agent -dev -client=0.0.0.0
+
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: EPHARMACY_CUSTOMERMS_DB
+    ports:
+      - "3306:3306"
+
+  customer-ms:
+    build: .
+    container_name: customer-ms
+    ports:
+      - "6100:6100"
+    depends_on:
+      - mysql
+      - consul
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/EPHARMACY_CUSTOMERMS_DB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
