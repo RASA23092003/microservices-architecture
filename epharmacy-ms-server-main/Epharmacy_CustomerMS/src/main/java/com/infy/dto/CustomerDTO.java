@@ -17,7 +17,7 @@ public class CustomerDTO {
 	private String customerEmailId;
 	@Pattern(regexp="^[6-7][0-9]{9}$",message="{customer.mobile.invalid}")
 	private String contactNumber;
-	@Null(message="{customer.password.invalid}")
+	@NotNull(message="{customer.password.invalid}")
 	private String password;
 	@Pattern(regexp = "^(Male|Female|Other)",message="{customer.gender.invalid}")
 	private String gender;
