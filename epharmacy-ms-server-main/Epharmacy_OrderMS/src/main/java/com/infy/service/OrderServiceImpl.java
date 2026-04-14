@@ -2,12 +2,15 @@ package com.infy.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.infy.dto.OrderDTO;
 import com.infy.exception.EPharmacyException;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
 	@Override

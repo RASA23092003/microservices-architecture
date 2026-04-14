@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 //Write the necessary annotations to validate the fields 
 public class CustomerDTO {
@@ -16,7 +17,7 @@ public class CustomerDTO {
 	private String customerEmailId;
 	@Pattern(regexp="^[6-7][0-9]{9}$",message="{customer.mobile.invalid}")
 	private String contactNumber;
-	@NotNull(message="{customer.password.invalid}")
+	@Null(message="{customer.password.invalid}")
 	private String password;
 	@Pattern(regexp = "^(Male|Female|Other)",message="{customer.gender.invalid}")
 	private String gender;

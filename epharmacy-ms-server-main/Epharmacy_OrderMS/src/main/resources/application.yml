@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: EPharmacy-OrderMS
+  datasource:
+    url: jdbc:mysql://localhost:3306/EPharmacy_OrderMS_DB?useSSL=false
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    consul:
+      discovery:
+        enabled: true
+        hostname: localhost
+        register: true
+        service-name: ${spring.application.name}
+
+server:
+  port: 6500
+  servlet:
+    context-path: /epharmacy

@@ -102,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new EPharmacyException("CustomerService.INVALID_DATE");
 		}
 		Customer customerEntity=objectMapper.convertValue(customerDTO, Customer.class);
-		String hashedPassword = HashingUtility.getHashValue(customer.getPassword());
+		String hashedPassword = HashingUtility.getHashValue(customerDTO.getPassword());
 		customerEntity.setPassword(hashedPassword);
 		customerEntity.getPlan().setPlanId(0);
 		Integer customerId=customerRepository.save(customerEntity).getCustomerId();

@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.infy.dto.OrderDTO;
 import com.infy.exception.EPharmacyException;
 import com.infy.service.OrderService;
-
+@RestController
 @RequestMapping(value = "order-api")
 public class OrderAPI {
 

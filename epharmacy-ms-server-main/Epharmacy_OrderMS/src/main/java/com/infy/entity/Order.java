@@ -3,14 +3,19 @@ package com.infy.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import com.infy.dto.DeliveryStatus;
 import com.infy.dto.OrderStatus;
-
+@Entity
 public class Order {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderId;
 	private Double orderValueBeforeDiscount;
 	private Double discountPercent;
