@@ -104,7 +104,8 @@ public class CustomerServiceImpl implements CustomerService {
 		Customer customerEntity=objectMapper.convertValue(customerDTO, Customer.class);
 		String hashedPassword = HashingUtility.getHashValue(customerDTO.getPassword());
 		customerEntity.setPassword(hashedPassword);
-		customerEntity.getPlan().setPlanId(0);
+		// PrimePlans plan=new PrimePlans();
+		// customerEntity.getPlan().setPlanId(0);
 		Integer customerId=customerRepository.save(customerEntity).getCustomerId();
 		String successMessage=environment.getProperty("CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS1"+"CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS2"+" "+customerId);
 		return successMessage;
