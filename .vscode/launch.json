@@ -42,6 +42,16 @@
             "projectName": "Epharmacy_CartMS",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PaymentMSApplication<Epharmacy_PaymentMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.PaymentMSApplication",
+            "projectName": "Epharmacy_PaymentMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

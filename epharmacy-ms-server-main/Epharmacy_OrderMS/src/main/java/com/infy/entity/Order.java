@@ -3,12 +3,14 @@ package com.infy.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.infy.dto.DeliveryStatus;
 import com.infy.dto.OrderStatus;
@@ -26,9 +28,11 @@ public class Order {
 	private OrderStatus orderStatus;
 	private LocalDateTime orderDate;
 	private String cancelReason;
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<OrderedMedicine> orderedMedicines;
 	private Integer deliveryAddressId;
 	private String cardId;
+	@Enumerated(EnumType.STRING)
 	private DeliveryStatus deliveryStatus;
 	public Integer getOrderId() {
 		return orderId;

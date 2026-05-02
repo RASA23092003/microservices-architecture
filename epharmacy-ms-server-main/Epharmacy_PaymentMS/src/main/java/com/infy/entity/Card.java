@@ -2,13 +2,20 @@ package com.infy.entity;
 
 import java.time.LocalDate;
 
+import javax.annotation.Generated;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import com.infy.dto.CardType;
 
-
+@Entity
 public class Card {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String cardId;
 	private String nameOnCard;
 	private String cvv;

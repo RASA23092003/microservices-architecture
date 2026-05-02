@@ -1,9 +1,8 @@
 spring:
   application:
-    name: EPharmacy-MedicineMS
+    name: EPharmacy_PaymentMS
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false
+    url: jdbc:mysql://localhost:3306/EPharmacy_PaymentMS_DB?useSSL=false
     username: root
     password: root
   jpa:
@@ -17,6 +16,6 @@ spring:
         register: true
         service-name: ${spring.application.name}
 server:
-  port: 6200
+  port: 6400
   servlet:
     context-path: /epharmacy

@@ -6,9 +6,9 @@ public class CardDTO {
 	private String cardId;
 	private String nameOnCard;
 	private String cvv;
+	
 	private LocalDate expiryDate;
 	private CardType cardType;
-	
 	private Integer customerId;
 
 	public Integer getCustomerId() {
