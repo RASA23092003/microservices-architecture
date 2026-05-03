@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +32,9 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	ObjectMapper mapper;
 
+	@Autowired
+	KafkaTemplate<String,PaymentDTO> kafkaTemplate;
+
 	@Override
 	public List<CardDTO> viewCards(Integer customerId) throws EPharmacyException {
 		List<Card> cards=cardRepository.findByCustomerId(customerId);
@@ -44,14 +49,23 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public void addCard(CardDTO cardDTO) throws EPharmacyException, NoSuchAlgorithmException {
-		Card card=cardRepository.findByNameandCVV(cardDTO.getNameOnCard(),cardDTO.getCvv()).orElseThrow(()-> new EPharmacyException("PaymentService.CARD_ALREADY_EXISTS"));
-		Card newCard=mapper.convertValue(cardDTO, Card.class);
+		System.out.println(cardDTO);
+		Optional<Card> card=cardRepository.findByNameandCVV(cardDTO.getNameOnCard(),cardDTO.getCvv());
+		if(card.isPresent()){
+			throw new EPharmacyException("PaymentService.CARD_ALREADY_EXISTS");
+		}
+		Card newCard=new Card();
+		newCard.setCardType(cardDTO.getCardType());
+		newCard.setCvv(cardDTO.getCvv());
+		newCard.setCustomerId(cardDTO.getCustomerId());
+		newCard.setExpiryDate(cardDTO.getExpiryDate());
+		newCard.setNameOnCard(cardDTO.getNameOnCard());		
 		cardRepository.save(newCard);
 	}
 
 	@Override
 	public void deleteCard(String cardId) throws EPharmacyException {
-		Card card=cardRepository.findById(cardId).orElseThrow(()->new EPharmacyException("PaymentService.NO_CARD_FOUND"));
+		Card card=cardRepository.findByCardId(cardId).orElseThrow(()->new EPharmacyException("PaymentService.NO_CARD_FOUND"));
 		cardRepository.delete(card);
 
 	}
@@ -74,8 +88,19 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public PaymentDTO getPaymentDetails(Integer paymentId) throws EPharmacyException {
 		Payment payment=paymentRepository.findById(paymentId).orElseThrow(()->new EPharmacyException("PaymentService.NO_TRANSACTION_FOUND"));
-		PaymentDTO dto=mapper.convertValue(payment, PaymentDTO.class);
-		CardDTO carddto =mapper.convertValue(cardRepository.findById(dto.getCard().getCardId()), CardDTO.class);
+		Card card=cardRepository.findById(payment.getCardId()).orElseThrow(()->new EPharmacyException("PaymentService.NO_CARD_FOUND"));
+		CardDTO carddto =new CardDTO();
+		carddto.setCardId(card.getCardId());
+		carddto.setCardType(card.getCardType());
+		carddto.setCvv(card.getCvv());
+		carddto.setExpiryDate(card.getExpiryDate());
+		carddto.setNameOnCard(card.getNameOnCard());
+		carddto.setCustomerId(card.getCustomerId());
+		PaymentDTO dto=new PaymentDTO();
+		dto.setPaymentId(payment.getPaymentId());
+		dto.setAmount(payment.getAmount());
+		dto.setPaymentTime(payment.getPaymentTime());
+		dto.setCustomerId(payment.getCustomerId());
 		dto.setCard(carddto);
 		return dto;
 	}
@@ -83,8 +108,18 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public CardDTO getCardDetails(String cardId) throws EPharmacyException {
 		Card card=cardRepository.findById(cardId).orElseThrow(()->new EPharmacyException("PaymentService.NO_CARD_FOUND"));
-        CardDTO dto=mapper.convertValue(card, CardDTO.class);
-		return dto;
+		CardDTO carddto =new CardDTO();
+		carddto.setCardId(card.getCardId());
+		carddto.setCardType(card.getCardType());
+		carddto.setCvv(card.getCvv());
+		carddto.setExpiryDate(card.getExpiryDate());
+		carddto.setNameOnCard(card.getNameOnCard());
+		carddto.setCustomerId(card.getCustomerId());		
+		return carddto;
+	}
+	@Override
+	public void sendPayment(PaymentDTO event) throws EPharmacyException{
+		kafkaTemplate.send("payment-events",event);
 	}
 
 }

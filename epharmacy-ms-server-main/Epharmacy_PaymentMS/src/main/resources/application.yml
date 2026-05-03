@@ -15,6 +15,12 @@ spring:
         enabled: true
         register: true
         service-name: ${spring.application.name}
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        
 server:
   port: 6400
   servlet:

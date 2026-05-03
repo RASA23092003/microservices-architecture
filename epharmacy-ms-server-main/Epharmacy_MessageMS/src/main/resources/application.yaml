@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: EPharmacy-MessageMS
+  # datasource:
+  #   url: 
+  #   username: root
+  #   password: root
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: ipdate
+  cloud:
+    consul:
+      discovery:
+        hostname: localhost
+        service-name: ${spring.application.name}
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: message-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      
+      properties:
+        "spring.json.trusted.packages": "*"
+        "spring.json.value.default.type": com.infy.message.dto.PaymentDTO       
+server:
+  port: 6600
+#   servlet:
+#     context-path: /epharmacy 

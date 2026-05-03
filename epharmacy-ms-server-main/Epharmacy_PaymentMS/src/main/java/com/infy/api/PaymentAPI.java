@@ -20,7 +20,7 @@ import com.infy.exception.EPharmacyException;
 import com.infy.service.PaymentService;
 
 @RestController
-@RequestMapping(value = "payment-api")
+@RequestMapping(value = "/payment-api")
 public class PaymentAPI {
 	
 	@Autowired
@@ -29,20 +29,22 @@ public class PaymentAPI {
 	Environment environment;
 
 
-	@PostMapping("payment/add/{amountToPay}")
+	@PostMapping("/payment/amount/{amountToPay}")
 	public ResponseEntity<String> makePayment(@RequestBody CardDTO cardDTO,Float amountToPay) throws Exception {
 		Integer paymentId=paymentService.makePayment(cardDTO, amountToPay);
 		String successMsg=environment.getProperty("PaymentAPI.PAYMENT_SUCCESS")+" "+paymentId;
+		PaymentDTO event=paymentService.getPaymentDetails(paymentId);
+		paymentService.sendPayment(event);
 		return new ResponseEntity<>(successMsg,HttpStatus.CREATED);
 	}
 
-	@GetMapping(value = "payment/details/{paymentId}")
+	@GetMapping(value = "/payment/details/{paymentId}")
 	public ResponseEntity<PaymentDTO> getPaymentDetails(@PathVariable Integer paymentId) throws EPharmacyException {
 		return new ResponseEntity<PaymentDTO>(paymentService.getPaymentDetails(paymentId), HttpStatus.OK);
 	}
 	
 
-	@GetMapping(value = "/payment/view-card/{cardId}")
+	@GetMapping(value = "/payment/card/{cardId}")
 	public ResponseEntity<CardDTO> getCardDetails(@PathVariable String cardId) throws EPharmacyException {
 		CardDTO card=paymentService.getCardDetails(cardId);
 		return new ResponseEntity<>(card,HttpStatus.OK);
@@ -53,8 +55,8 @@ public class PaymentAPI {
 		return new ResponseEntity<>(cards,HttpStatus.OK);
 	}
 
-	@PostMapping(value="/payment/add-card/{customerId}")
-	public ResponseEntity<String> addCardForPayment(CardDTO cDTO)throws Exception {
+	@PostMapping(value="/payment/add-card")
+	public ResponseEntity<String> addCardForPayment(@RequestBody CardDTO cDTO)throws Exception {
 		paymentService.addCard(cDTO);
 		String successMsg=environment.getProperty("CardAPI.ADD_CARD_SUCCESS");
 		return new ResponseEntity<>(successMsg,HttpStatus.CREATED);
