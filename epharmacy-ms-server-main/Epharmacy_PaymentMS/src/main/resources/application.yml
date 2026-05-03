@@ -2,7 +2,7 @@ spring:
   application:
     name: EPharmacy_PaymentMS
   datasource:
-    url: jdbc:mysql://localhost:3306/EPharmacy_PaymentMS_DB?useSSL=false
+    url: jdbc:mysql://mysql:3306/EPharmacy_PaymentMS_DB?useSSL=false
     username: root
     password: root
   jpa:
@@ -11,13 +11,15 @@ spring:
   cloud:
     consul:
       discovery:
-        hostname: localhost
+        hostname: consul
+        port: 8500
         enabled: true
         register: true
         service-name: ${spring.application.name}
+        prefer-ip-address: true
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
         
