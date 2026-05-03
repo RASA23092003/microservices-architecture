@@ -15,7 +15,6 @@ import com.infy.dto.CardType;
 @Entity
 public class Card {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String cardId;
 	private String nameOnCard;
 	private String cvv;
