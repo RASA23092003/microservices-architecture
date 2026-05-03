@@ -30,8 +30,15 @@ spring:
       properties:
         spring.json.trusted.packages: "*"
         spring.json.value.default.type: com.infy.message.dto.PaymentDTO
-        spring.json.use.type.headers: false       
+        spring.json.use.type.headers: false      
+   
 server:
   port: 6600
 #   servlet:
 #     context-path: /epharmacy 
+
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+
+
