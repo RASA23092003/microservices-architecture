@@ -119,7 +119,9 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 	@Override
 	public void sendPayment(PaymentDTO event) throws EPharmacyException{
+		System.out.println("Sending payment event to Kafka: " + event);
 		kafkaTemplate.send("payment-events",event);
+		System.out.println("Payment event sent to Kafka successfully");
 	}
 
 }
