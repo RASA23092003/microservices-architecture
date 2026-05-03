@@ -64,7 +64,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public void deleteCard(String cardId) throws EPharmacyException {
+	public void deleteCard(Integer cardId) throws EPharmacyException {
 		Card card=cardRepository.findByCardId(cardId).orElseThrow(()->new EPharmacyException("PaymentService.NO_CARD_FOUND"));
 		cardRepository.delete(card);
 
@@ -106,7 +106,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public CardDTO getCardDetails(String cardId) throws EPharmacyException {
+	public CardDTO getCardDetails(Integer cardId) throws EPharmacyException {
 		Card card=cardRepository.findById(cardId).orElseThrow(()->new EPharmacyException("PaymentService.NO_CARD_FOUND"));
 		CardDTO carddto =new CardDTO();
 		carddto.setCardId(card.getCardId());

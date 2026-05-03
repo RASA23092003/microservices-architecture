@@ -45,7 +45,7 @@ public class PaymentAPI {
 	
 
 	@GetMapping(value = "/payment/card/{cardId}")
-	public ResponseEntity<CardDTO> getCardDetails(@PathVariable String cardId) throws EPharmacyException {
+	public ResponseEntity<CardDTO> getCardDetails(@PathVariable Integer cardId) throws EPharmacyException {
 		CardDTO card=paymentService.getCardDetails(cardId);
 		return new ResponseEntity<>(card,HttpStatus.OK);
 	}
@@ -63,7 +63,7 @@ public class PaymentAPI {
 	}
 	
 	@DeleteMapping(value = "/payment/delete-card/{cardId}")
-	public ResponseEntity<String> deleteCard(@PathVariable String cardId) throws EPharmacyException{
+	public ResponseEntity<String> deleteCard(@PathVariable Integer cardId) throws EPharmacyException{
 		String successMsg=environment.getProperty("CardAPI.DELETE_CARD_SUCCESS");
 		return new ResponseEntity<>(successMsg,HttpStatus.OK);
 	}

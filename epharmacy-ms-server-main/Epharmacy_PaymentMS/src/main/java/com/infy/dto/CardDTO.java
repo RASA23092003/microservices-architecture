@@ -3,7 +3,7 @@ package com.infy.dto;
 import java.time.LocalDate;
 //Write the necessary annotations to validate the fields
 public class CardDTO {
-	private String cardId;
+	private Integer cardId;
 	private String nameOnCard;
 	private String cvv;
 	
@@ -17,11 +17,11 @@ public class CardDTO {
 		this.customerId = customerId;
 	}
 	
-	public String getCardId() {
+	public Integer getCardId() {
 		return cardId;
 	}
 
-	public void setCardId(String cardId) {
+	public void setCardId(Integer cardId) {
 		this.cardId = cardId;
 	}
 

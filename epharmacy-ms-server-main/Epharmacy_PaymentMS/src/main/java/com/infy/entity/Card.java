@@ -15,7 +15,8 @@ import com.infy.dto.CardType;
 @Entity
 public class Card {
 	@Id
-	private String cardId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer cardId;
 	private String nameOnCard;
 	private String cvv;
 	private LocalDate expiryDate;
@@ -29,10 +30,10 @@ public class Card {
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
-	public String getCardId() {
+	public Integer getCardId() {
 		return cardId;
 	}
-	public void setCardId(String cardId) {
+	public void setCardId(Integer cardId) {
 		this.cardId = cardId;
 	}
 	public String getNameOnCard() {
