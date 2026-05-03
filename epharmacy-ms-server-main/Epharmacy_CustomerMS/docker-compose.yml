@@ -12,7 +12,6 @@ services:
     container_name: mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: EPHARMACY_CUSTOMERMS_DB
     ports:
       - "3306:3306"
 

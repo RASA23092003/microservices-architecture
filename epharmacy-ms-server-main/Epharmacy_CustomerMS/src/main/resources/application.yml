@@ -5,7 +5,7 @@ spring:
     # driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://mysql:3306/EPHARMACY_CUSTOMERMS_DB
+    url: jdbc:mysql://mysql:3306/EPHARMACY_CUSTOMERMS_DB?useSSL=false&createDatabaseIfNotExist=true
   jpa:
     hibernate:
       ddl-auto: update
