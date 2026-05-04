@@ -8,7 +8,7 @@ import com.infy.message.dto.PaymentDTO;
 @Service
 public class PaymentConsumer {
 
-    @KafkaListener(topics="payment-events",groupId = "message-group")
+    @KafkaListener(topics="payment-event",groupId = "message-group")
     public void consume(PaymentDTO event) {
         System.out.println("Received event: " + event);
 
