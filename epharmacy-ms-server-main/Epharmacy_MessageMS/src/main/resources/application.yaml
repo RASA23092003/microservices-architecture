@@ -19,7 +19,7 @@ spring:
         service-name: ${spring.application.name}
         prefer-ip-address: true
   kafka:
-    topic.name: payment-topic
+    topic.name: payment-event
     consumer:
       bootstrap-servers: kafka:9092
       group-id: message-group

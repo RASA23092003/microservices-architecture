@@ -41,7 +41,7 @@ public class PaymentAPI {
 		Integer paymentId=paymentService.makePayment(cardDTO, amountToPay);
 		String successMsg=environment.getProperty("PaymentAPI.PAYMENT_SUCCESS")+" "+paymentId;
 		PaymentDTO event=paymentService.getPaymentDetails(paymentId);
-		Message<PaymentDTO> message=MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, "payment-topic").build();
+		Message<PaymentDTO> message=MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, "payment-event").build();
 		kafkaTemplate.send(message);
 		//paymentService.sendPayment(event);
 		return new ResponseEntity<>(successMsg,HttpStatus.CREATED);
