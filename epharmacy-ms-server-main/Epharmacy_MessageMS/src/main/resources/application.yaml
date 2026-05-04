@@ -19,6 +19,7 @@ spring:
         service-name: ${spring.application.name}
         prefer-ip-address: true
   kafka:
+    topic.name: payment-topic
     consumer:
       bootstrap-servers: kafka:9092
       group-id: message-group
@@ -26,11 +27,16 @@ spring:
 
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-
       properties:
-        "spring.json.trusted.packages": "*"
-        "spring.json.use.type.headers": false
-        "spring.json.value.default.type": com.infy.message.dto.PaymentDTO    
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.infy.message.dto.PaymentDTO
+    
+
+      # properties:
+      #   "spring.json.trusted.packages": "*"
+      #   "spring.json.use.type.headers": false
+      #   "spring.json.value.default.type": com.infy.message.dto.PaymentDTO    
    
 server:
   port: 6600

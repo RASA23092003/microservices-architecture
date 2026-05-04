@@ -32,8 +32,8 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	ObjectMapper mapper;
 
-	@Autowired
-	KafkaTemplate<String,PaymentDTO> kafkaTemplate;
+	// @Autowired
+	// KafkaTemplate<String,PaymentDTO> kafkaTemplate;
 
 	@Override
 	public List<CardDTO> viewCards(Integer customerId) throws EPharmacyException {
@@ -120,7 +120,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public void sendPayment(PaymentDTO event) throws EPharmacyException{
 		System.out.println("Sending payment event to Kafka: " + event);
-		kafkaTemplate.send("payment-events",event);
+		//kafkaTemplate.send("payment-events",event);
 		System.out.println("Payment event sent to Kafka successfully");
 	}
 
