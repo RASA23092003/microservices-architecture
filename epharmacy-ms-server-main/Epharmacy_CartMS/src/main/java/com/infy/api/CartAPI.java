@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class CartAPI {
 	@Autowired 
 	private Environment environment;
 	
-	@GetMapping("/cart/add-medicine/{medicineId}/customer/{customerId}")
+	@PostMapping("/cart/add-medicine/{medicineId}/customer/{customerId}")
 	public ResponseEntity<String> addMedicinesToCart(@RequestBody CustomerCartDTO customerCartDTO, @PathVariable("medicineId") Integer medicineId,@PathVariable("customerId") Integer customerId)
 			throws EPharmacyException {
 		customerCartService.addMedicinesToCart(customerCartDTO, medicineId, customerId);

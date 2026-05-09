@@ -104,10 +104,12 @@ public class CustomerServiceImpl implements CustomerService {
 		Customer customerEntity=objectMapper.convertValue(customerDTO, Customer.class);
 		String hashedPassword = HashingUtility.getHashValue(customerDTO.getPassword());
 		customerEntity.setPassword(hashedPassword);
+		customerEntity.setPlan(new PrimePlans());
+		customerEntity.setHealthCoins(0);
 		// PrimePlans plan=new PrimePlans();
 		// customerEntity.getPlan().setPlanId(0);
 		Integer customerId=customerRepository.save(customerEntity).getCustomerId();
-		String successMessage=environment.getProperty("CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS1"+"CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS2"+" "+customerId);
+		String successMessage=environment.getProperty("CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS1")+" "+environment.getProperty("CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS2")+" "+customerId;
 		return successMessage;
 	}
 
@@ -154,7 +156,7 @@ public class CustomerServiceImpl implements CustomerService {
 		customer.setCustomerName(dto.getCustomerName());
 		customer.setCustomerEmailId(dto.getCustomerEmailId());
 		customer.setContactNumber(dto.getContactNumber());
-		String successMsg=environment.getProperty("CustomerAPI.UPGRADE_CUSTOMER_SUCCESS");
+		String successMsg=environment.getProperty("CustomerAPI.UPDATE_CUSTOMER_DETAILS_SUCCESS");
 		return successMsg;
 	}
 
@@ -162,7 +164,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public void changePassword(ChangePasswordDTO changePasswordDTO) throws EPharmacyException, NoSuchAlgorithmException{
 		Customer customer=customerRepository.findById(changePasswordDTO.getCustomerId()).orElseThrow(()->new EPharmacyException("CustomerService.NO_CUSTOMER_FOUND"));
 		String hashPassword=HashingUtility.getHashValue(changePasswordDTO.getOldPassword());
-		if(hashPassword!=customer.getPassword()){
+		if(!hashPassword.equals(customer.getPassword())){
 			throw new EPharmacyException("CustomerService.WRONG_PASSWORD");
 		}
 		if(!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmPassword())){
@@ -171,13 +173,15 @@ public class CustomerServiceImpl implements CustomerService {
 		String newhashPassword=HashingUtility.getHashValue(changePasswordDTO.getNewPassword());
 
 		List<PasswordHistory> history=passwordHistoryRepo.findByCustomer(changePasswordDTO.getCustomerId());
-		for(int i=history.size()-1;i>=history.size()-4;i--){
+		for(int i=history.size()-1;i>=Math.max(0, history.size()-3);i--){
 			if(newhashPassword.equals(history.get(i).getPassword())){
 				throw new EPharmacyException("CustomerService.PASSWORD_FOUND_IN_HISTORY");
 			}
 		}
 		customer.setPassword(newhashPassword);
-		PasswordHistory password=objectMapper.convertValue(changePasswordDTO, PasswordHistory.class);
+		PasswordHistory password=new PasswordHistory();
+		password.setCustomerId(changePasswordDTO.getCustomerId());
+		password.setPassword(newhashPassword);
 		passwordHistoryRepo.save(password);
 		return;
 	}
@@ -186,14 +190,15 @@ public class CustomerServiceImpl implements CustomerService {
 	public LocalDate upgradeCustomerToPrime(CustomerDTO customerDTO) throws EPharmacyException {
 		int planId=customerDTO.getPlan().getPlanId();
 		Customer customer=customerRepository.findById(customerDTO.getCustomerId()).orElseThrow(()->new EPharmacyException("CustomerService.NO_CUSTOMER_FOUND"));
-		if(planId==0) throw new EPharmacyException("CustomerService.NO_PLAN_SELECTED");
-		if(customer.getPlan().getPlanId()<=0 && customer.getPlan().getPlanId()<4) throw new EPharmacyException("CustomerService.ALREADY_SUBSCRIBED");
+		if(customer.getPlan()!=null && customer.getPlan().getPlanId()==planId) throw new EPharmacyException("CustomerService.ALREADY_SUBSCRIBED");
 		PrimePlans plans=planRepo.findById(customerDTO.getPlan().getPlanId()).orElseThrow(()->new EPharmacyException("CustomerService.NO_PLAN_FOUND"));
-		customer.getPlan().setPlanId(planId);
+		customer.setPlan(plans);
+
 		LocalDate expiaryDate = null;
-		if(planId==1) expiaryDate.plusMonths(1);
-		else if(planId==2) expiaryDate.plusMonths(4);
-		else if(planId==3) expiaryDate.plusYears(1);
+		if(planId==1) 
+			expiaryDate=LocalDate.now().plusMonths(1);
+		else if(planId==2) expiaryDate=LocalDate.now().plusMonths(4);
+		else if(planId==3) expiaryDate=LocalDate.now().plusYears(1);
 		customer.setPlanExpiryDate(expiaryDate);
 		return expiaryDate;
 	}

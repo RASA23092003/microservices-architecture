@@ -24,7 +24,7 @@ import com.infy.exception.EPharmacyException;
 import com.infy.service.MedicineService;
 
 @RestController
-@RequestMapping(value="/epharmacy/medicine-api")
+@RequestMapping(value="/medicine-api")
 @CrossOrigin
 
 public class MedicineAPI {

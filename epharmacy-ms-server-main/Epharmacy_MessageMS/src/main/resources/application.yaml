@@ -21,7 +21,8 @@ spring:
   kafka:
     topic.name: payment-event
     consumer:
-      bootstrap-servers: kafka:9092
+      # bootstrap-servers: kafka:9092
+      bootstrap-servers: localhost:9092
       group-id: message-group
       auto-offset-reset: earliest
 

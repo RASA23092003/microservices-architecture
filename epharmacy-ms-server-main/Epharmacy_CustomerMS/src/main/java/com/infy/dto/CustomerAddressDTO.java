@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 public class CustomerAddressDTO {
 	
 	private Integer addressId;
-	@Pattern(regexp = "(Home|Work)",message="{address.name.notpresent}")
+	@Pattern(regexp = "(Home|Work|Office)",message="{address.name.notpresent}")
 	@NotNull(message = "{address.name.invalid}")
 	private String addressName;
 	@NotNull(message="{address.line1.notpresent}")
@@ -15,10 +15,10 @@ public class CustomerAddressDTO {
 	private String addressLine2;
 	private String area;
 	@NotNull(message = "{address.city.notpresent}")
-	@Pattern(regexp="[a-zA-Z]+(//s[a-zA-Z])*$",message="{address.city.invalid}")
+	@Pattern(regexp="[a-zA-Z]+(\\s[a-zA-Z]+)*$",message="{address.city.invalid}")
 	private String city;
 	@NotNull(message = "{address.state.notpresent}")
-	@Pattern(regexp="[a-zA-Z]+(//s[a-zA-Z])*$",message="{address.state.invalid}")
+	@Pattern(regexp="[a-zA-Z]+(\\s[a-zA-Z]+)*$",message="{address.state.invalid}")
 	private String state;
 	@NotNull(message = "{address.pincode.notpresent}")
 	@Pattern(regexp = "[0-9]{6}",message="address.pincode.invalid")

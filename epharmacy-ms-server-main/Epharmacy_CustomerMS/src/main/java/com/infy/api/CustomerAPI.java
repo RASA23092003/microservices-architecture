@@ -95,7 +95,7 @@ public class CustomerAPI {
 	@PutMapping("/customer/upgrade")
 	public ResponseEntity<String> upgradeCustomer(@RequestBody CustomerDTO custDTO) throws Exception {
 		LocalDate expiaryDate=customerService.upgradeCustomerToPrime(custDTO);
-		String successMsg=environment.getProperty("CustomerAPI.UPGRADE_CUSTOMER_SUCCESS");
+		String successMsg=environment.getProperty("CustomerAPI.UPGRADE_CUSTOMER_SUCCESS")+" Expiry Date: "+expiaryDate;
 		return new ResponseEntity<>(successMsg,HttpStatus.OK);
 	}
 }

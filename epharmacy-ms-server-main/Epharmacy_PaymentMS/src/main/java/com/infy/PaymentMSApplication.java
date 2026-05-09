@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.kafka.config.TopicBuilder;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @PropertySource(value = { "classpath:messages.properties" })
@@ -18,6 +19,11 @@ public class PaymentMSApplication {
 	@Bean
 	public NewTopic paymentTopic() {
 		return TopicBuilder.name("payment-topic").build();
+	}
+
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 
 }

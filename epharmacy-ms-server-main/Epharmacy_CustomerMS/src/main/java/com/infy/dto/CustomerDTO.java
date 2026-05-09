@@ -11,11 +11,11 @@ import javax.validation.constraints.Pattern;
 //Write the necessary annotations to validate the fields 
 public class CustomerDTO {
 	private Integer customerId;
-	@Pattern(regexp="^[A-Za-z]+(//s[A-Za-z]+)*$",message = "{customer.name.invalid}")
+	@Pattern(regexp="^[A-Za-z]+(\\s[A-Za-z]+)*$",message = "{customer.name.invalid}")
 	private String customerName;
 	@Email(message ="{customer.email.invalid}")
 	private String customerEmailId;
-	@Pattern(regexp="^[6-7][0-9]{9}$",message="{customer.mobile.invalid}")
+	@Pattern(regexp="^[6-9][0-9]{9}$",message="{customer.mobile.invalid}")
 	private String contactNumber;
 	@NotNull(message="{customer.password.invalid}")
 	private String password;

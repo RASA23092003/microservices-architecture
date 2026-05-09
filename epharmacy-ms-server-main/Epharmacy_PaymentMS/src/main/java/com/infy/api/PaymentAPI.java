@@ -37,12 +37,12 @@ public class PaymentAPI {
 
 
 	@PostMapping("/payment/amount/{amountToPay}")
-	public ResponseEntity<String> makePayment(@RequestBody CardDTO cardDTO,Float amountToPay) throws Exception {
+	public ResponseEntity<String> makePayment(@RequestBody CardDTO cardDTO,@PathVariable Float amountToPay) throws Exception {
 		Integer paymentId=paymentService.makePayment(cardDTO, amountToPay);
 		String successMsg=environment.getProperty("PaymentAPI.PAYMENT_SUCCESS")+" "+paymentId;
-		PaymentDTO event=paymentService.getPaymentDetails(paymentId);
-		Message<PaymentDTO> message=MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, "payment-event").build();
-		kafkaTemplate.send(message);
+		// PaymentDTO event=paymentService.getPaymentDetails(paymentId);
+		// Message<PaymentDTO> message=MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, "payment-event").build();
+		// kafkaTemplate.send(message);
 		//paymentService.sendPayment(event);
 		return new ResponseEntity<>(successMsg,HttpStatus.CREATED);
 	}
