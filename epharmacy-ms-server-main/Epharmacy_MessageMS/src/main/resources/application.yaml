@@ -10,7 +10,7 @@ spring:
   #     ddl-auto: ipdate
   cloud:
     consul:
-      host: consul
+      # host: consul
       port: 8500
       discovery:
         

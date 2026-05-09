@@ -2,8 +2,8 @@ spring:
   application:
     name: EPharmacy-MedicineMS
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false
+  # url: jdbc:mysql://mysql:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false&createDatabaseIfNotExist=true
     username: root
     password: root
   jpa:
@@ -11,8 +11,10 @@ spring:
       ddl-auto: update
   cloud:
     consul:
+      # host: consul
+      port: 8500
       discovery:
-        hostname: localhost
+        prefer-ip-address: true
         enabled: true
         register: true
         service-name: ${spring.application.name}

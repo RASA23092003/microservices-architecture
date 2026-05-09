@@ -2,7 +2,8 @@ spring:
   application:
     name: EPharmacy-OrderMS
   datasource:
-    url: jdbc:mysql://localhost:3306/EPharmacy_OrderMS_DB?useSSL=false
+    # url: jdbc:mysql://mysql:3306/EPharmacy_OrderMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/EPharmacy_OrderMS_DB?useSSL=false&createDatabaseIfNotExist=true
     username: root
     password: root
   jpa:
@@ -10,9 +11,10 @@ spring:
       ddl-auto: update
   cloud:
     consul:
+      # host: consul
+      port: 8500
       discovery:
         enabled: true
-        hostname: localhost
         register: true
         service-name: ${spring.application.name}
 

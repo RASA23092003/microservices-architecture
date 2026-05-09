@@ -2,7 +2,9 @@ spring:
   application:
     name: EPharmacy-CartMS
   datasource:
-    url: jdbc:mysql://localhost:3306/EPHARMACY_CARTMS_DB?useSSL=false
+    # url: jdbc:mysql://mysql:3306/EPHARMACY_CARTMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/EPHARMACY_CARTMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    
     username: root
     password: root
   jpa:
@@ -10,8 +12,10 @@ spring:
       ddl-auto: update
   cloud:
     consul:
+      # host: consul
+      port: 8500
       discovery:
-        hostname: localhost
+        
         enabled: true
         register: true
         service-name: ${spring.application.name}
