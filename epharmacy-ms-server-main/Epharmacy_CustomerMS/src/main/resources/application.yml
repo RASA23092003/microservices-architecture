@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: EPharmacy-CustomerMS
+  datasource:
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    # url: jdbc:mysql://mysql:3306/EPHARMACY_CUSTOMERMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/EPHARMACY_CUSTOMERMS_DB?useSSL=false&createDatabaseIfNotExist=true
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    consul:
+      # host: consul
+      port: 8500
+      discovery: 
+        enabled: true
+        register: true
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
+  
+server:
+  port: 6100
+  servlet:
+    context-path: /epharmacy

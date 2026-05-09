@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: EPharmacy-MedicineMS
+  datasource:
+  # url: jdbc:mysql://mysql:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/EPHARMACY_MEDICINEMS_DB?useSSL=false&createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cloud:
+    consul:
+      # host: consul
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        enabled: true
+        register: true
+        service-name: ${spring.application.name}
+server:
+  port: 6200
+  servlet:
+    context-path: /epharmacy

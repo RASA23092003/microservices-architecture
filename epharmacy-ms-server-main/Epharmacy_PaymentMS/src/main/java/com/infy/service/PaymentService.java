@@ -12,8 +12,9 @@ public interface PaymentService {
 			throws EPharmacyException, NoSuchAlgorithmException;
 
 	public void addCard(CardDTO cardDTO) throws Exception;
-	public void deleteCard(String cardId) throws EPharmacyException;
+	public void deleteCard(Integer cardId) throws EPharmacyException;
 	public List<CardDTO> viewCards(Integer customerId) throws EPharmacyException;
 	PaymentDTO getPaymentDetails(Integer paymentId) throws EPharmacyException;
-	CardDTO getCardDetails(String cardId) throws EPharmacyException;
+	CardDTO getCardDetails(Integer cardId) throws EPharmacyException;
+	public void sendPayment(PaymentDTO event) throws EPharmacyException;
 }

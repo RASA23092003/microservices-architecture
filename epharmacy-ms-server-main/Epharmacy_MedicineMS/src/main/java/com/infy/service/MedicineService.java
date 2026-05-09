@@ -10,4 +10,5 @@ public interface MedicineService {
 	List<MedicineDTO> getMedicinesByCategory(String category)throws EPharmacyException;
 	MedicineDTO getMedicineById(Integer medicineId) throws EPharmacyException;
 	void updateMedicineQuantityAfterOrder(Integer medicineId, Integer orderedQuantity) throws EPharmacyException;
+	Integer addMedicine(MedicineDTO medicineDTO) throws EPharmacyException;
 }

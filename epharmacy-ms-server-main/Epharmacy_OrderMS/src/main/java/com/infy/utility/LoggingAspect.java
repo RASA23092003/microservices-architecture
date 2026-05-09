@@ -1,7 +1,24 @@
 package com.infy.utility;
 
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+@Controller
+@Aspect
 public class LoggingAspect {
 
-	//write the advice to handle service exceptions
+	
+@AfterThrowing(pointcut = "execution(* com.infy.service.*Impl.*(..))", throwing = "exception")
+public void logExceptionFromService(Exception exception){
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+		if (exception.getMessage() != null) {
+			logger.error(exception.getMessage());
+		} else {
+			logger.error(exception.getMessage(), exception);
+		}
+
+} 
 
 }

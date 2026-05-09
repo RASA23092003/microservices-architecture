@@ -3,17 +3,32 @@ package com.infy.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Value;
 
 import com.infy.dto.DeliveryStatus;
 import com.infy.dto.OrderStatus;
-
+@Entity
+@Table(name = "ORDER_DETAILS")
 public class Order {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderId;
+	@Column(name ="MRP_TOTAL")
 	private Double orderValueBeforeDiscount;
 	private Double discountPercent;
+	@Column(name = "DISCOUNTED_TOTAL")
 	private Double orderValueAfterDiscount;
 	private LocalDateTime deliveryDate;
 	private Integer customerId;
@@ -21,9 +36,13 @@ public class Order {
 	private OrderStatus orderStatus;
 	private LocalDateTime orderDate;
 	private String cancelReason;
+	@OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ORDER_ID")
 	private List<OrderedMedicine> orderedMedicines;
+	@Column(name = "ADDRESS_ID")
 	private Integer deliveryAddressId;
 	private String cardId;
+	@Enumerated(EnumType.STRING)
 	private DeliveryStatus deliveryStatus;
 	public Integer getOrderId() {
 		return orderId;

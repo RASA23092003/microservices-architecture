@@ -1,0 +1,86 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "MessageApplication",
+            "request": "launch",
+            "mainClass": "com.infy.message.MessageApplication"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CustomerMSApplication<Epharmacy_CustomerMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.CustomerMSApplication",
+            "projectName": "Epharmacy_CustomerMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=55061 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_CustomerMS"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MedicineMSApplication<Epharmacy_MedicineMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.MedicineMSApplication",
+            "projectName": "Epharmacy_MedicineMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=54757 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_MedicineMS"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EpharmacyGatewayApplication<Epharmacy_Gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.EpharmacyGatewayApplication",
+            "projectName": "Epharmacy_Gateway",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=52295 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_Gateway"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CartMSApplication<Epharmacy_CartMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.CartMSApplication",
+            "projectName": "Epharmacy_CartMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PaymentMSApplication<Epharmacy_PaymentMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.PaymentMSApplication",
+            "projectName": "Epharmacy_PaymentMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51438 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=Epharmacy_PaymentMS"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MessageApplication<Epharmacy_MessageMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.message.MessageApplication",
+            "projectName": "Epharmacy_MessageMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-OrderMSApplication<Epharmacy_OrderMS>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.infy.OrderMSApplication",
+            "projectName": "Epharmacy_OrderMS",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: EPharmacy-MessageMS
+  # datasource:
+  #   url: 
+  #   username: root
+  #   password: root
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: ipdate
+  cloud:
+    consul:
+      # host: consul
+      port: 8500
+      discovery:
+        
+        enabled: true
+        register: true
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
+  kafka:
+    topic.name: payment-event
+    consumer:
+      # bootstrap-servers: kafka:9092
+      bootstrap-servers: localhost:9092
+      group-id: message-group
+      auto-offset-reset: earliest
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.infy.message.dto.PaymentDTO
+    
+
+      # properties:
+      #   "spring.json.trusted.packages": "*"
+      #   "spring.json.use.type.headers": false
+      #   "spring.json.value.default.type": com.infy.message.dto.PaymentDTO    
+   
+server:
+  port: 6600
+#   servlet:
+#     context-path: /epharmacy 
+
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+
+
