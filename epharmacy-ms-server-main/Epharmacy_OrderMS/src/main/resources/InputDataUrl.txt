@@ -6,7 +6,7 @@ Request Body
 	"customer":{"customerId":101};
 	"deliveryAddress":{"addressId":1};
 	"card":{
-				"cardId":"1234123412341234",
+				"cardId":"1",
     			"cvv":"123",
     			"customerId":101
     		}

@@ -9,9 +9,14 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infy.dto.CardDTO;
+import com.infy.dto.CustomerAddressDTO;
+import com.infy.dto.CustomerDTO;
 import com.infy.dto.DeliveryStatus;
+import com.infy.dto.MedicineDTO;
 import com.infy.dto.OrderDTO;
 import com.infy.dto.OrderStatus;
 import com.infy.dto.OrderedMedicineDTO;
@@ -29,15 +34,56 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	OrderRepository orderRepository;
 
+	@Autowired
+	RestTemplate restTemplate;
+
 	@Override
 	public List<OrderDTO> viewOrders(Integer customerId) throws EPharmacyException {
-		//code here
-		return null;
+		List<Order> orders=orderRepository.findByCustomerId(customerId);
+		 List<OrderDTO> orderDTOs=new ArrayList<>();
+		 for(Order order:orders){
+			OrderDTO dto=new OrderDTO();
+			dto.setOrderId(order.getOrderId());
+			dto.setOrderDate(order.getOrderDate());
+			dto.setOrderValueBeforeDiscount(order.getOrderValueBeforeDiscount());
+			dto.setOrderValueAfterDiscount(order.getOrderValueAfterDiscount());
+			dto.setDiscountPercent(order.getDiscountPercent());
+			dto.setDeliveryDate(order.getDeliveryDate());
+			dto.setCancelReason(order.getCancelReason());
+			for(OrderedMedicine medicine:order.getOrderedMedicines()){
+				OrderedMedicineDTO medicineDTO=new OrderedMedicineDTO();
+				medicineDTO.setOrderedMedicineId(medicine.getOrderedMedicineId());
+				medicineDTO.setOrderedQuantity(medicine.getOrderedQuantity());
+				medicineDTO.setOrderSubtotal(medicine.getOrderSubtotal());
+				medicineDTO.setMedicine(restTemplate.getForObject("http://Epharmacy-MedicineMS/epharmacy/medicine-api/medicines/"+medicine.getMedicineId(), MedicineDTO.class));
+				dto.getOrderedMedicines().add(medicineDTO);
+			}
+			CardDTO carddto=restTemplate.getForObject("http://Epharmacy-PaymentMS/epharmacy/payment-api/payment/card/"+order.getCardId(), CardDTO.class);
+			dto.setCard(carddto);
+			CustomerDTO customerDTO=restTemplate.getForObject("http://Epharmacy-CustomerMS/epharmacy/customer-api/customer/"+order.getCustomerId(), CustomerDTO.class);
+			dto.setCustomer(customerDTO);
+			for(CustomerAddressDTO address:customerDTO.getAddressList()){
+				if(address.getAddressId()==order.getDeliveryAddressId()){
+					dto.setDeliveryAddress(address);
+				}
+			}
+			if(LocalDateTime.now().isAfter(order.getOrderDate().plusMinutes(30))) {
+				dto.setDeliveryStatus(DeliveryStatus.IN_TRANSIT);
+				dto.setOrderStatus(OrderStatus.CONFIRMED);
+			}else if(LocalDateTime.now().isAfter(order.getOrderDate().plusDays(1))) {
+				dto.setDeliveryStatus(DeliveryStatus.OUT_FOR_DELIVERY);
+			}else if(LocalDateTime.now().isAfter(order.getOrderDate().plusDays(1).plusHours(5))) {
+				dto.setDeliveryStatus(DeliveryStatus.DELIVERED);
+				dto.setOrderStatus(OrderStatus.COMPLETED);
+			}
+			orderDTOs.add(dto);
+		}
+		return orderDTOs;
 	}
 
 
 	@Override
-	public String placeOrder(OrderDTO orderDTO) throws EPharmacyException {
+	public Order placeOrder(OrderDTO orderDTO) throws EPharmacyException {
 		Order neworder=new Order();
 		neworder.setOrderValueBeforeDiscount(orderDTO.getOrderValueAfterDiscount());
 		neworder.setCustomerId(orderDTO.getCustomer().getCustomerId());
@@ -65,14 +111,21 @@ public class OrderServiceImpl implements OrderService {
 			medicineList.add(medicine);
 		}
 		neworder.setCardId(orderDTO.getCard().getCardId());
-
-		
-		
-		return null;
+		return orderRepository.save(neworder);
 	}
 
 	@Override
 	public void cancelOrder(Integer orderId, String reason) throws EPharmacyException {
-		//code here
+		Order order=orderRepository.findById(orderId).orElseThrow(()->new EPharmacyException("OrderService.NO_ORDERED_PRODUCTS_FOUND"));
+		if(order.getOrderStatus()==OrderStatus.CANCELLED) {
+			throw new EPharmacyException("OrderService.ORDER_ALREADY_CANCELLED");
+		}
+		if(order.getOrderStatus()==OrderStatus.PROCESSING) {
+			order.setOrderStatus(OrderStatus.CANCELLED);
+			order.setCancelReason(reason);
+			orderRepository.save(order);
+		}else {
+			throw new EPharmacyException("OrderService.ORDER_CANNOT_CANCEL");
+		}
 	}
 }

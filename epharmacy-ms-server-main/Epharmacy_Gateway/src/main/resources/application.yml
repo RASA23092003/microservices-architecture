@@ -26,6 +26,14 @@ spring:
           uri: lb://Epharmacy-CartMS
           predicates:
             - Path=/epharmacy/cart-api/**
+        - id: EPharmacy-OrderMS
+          uri: lb://EPharmacy-OrderMS
+          predicates:
+            - Path=/epharmacy/order-api/**
+        - id: EPharmacy-PaymentMS
+          uri: lb://EPharmacy-PaymentMS 
+          predicates:
+          - Path=/epharmacy/payment-api/**
             
          
       
