@@ -1,4 +1,8 @@
 spring:
+  # cache:
+  #   type: redis
+  # data.redis.host: localhost
+  # data.redis.port: 6379
   application:
     name: EPharmacy-CustomerMS
   datasource:
@@ -22,5 +26,7 @@ spring:
   
 server:
   port: 6100
-  servlet:
-    context-path: /epharmacy
+  # servlet:
+  #   context-path: /epharmacy
+
+

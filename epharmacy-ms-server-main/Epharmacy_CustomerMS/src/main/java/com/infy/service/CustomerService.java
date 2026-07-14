@@ -26,6 +26,8 @@ public interface CustomerService {
 	
 	void changePassword(ChangePasswordDTO changePasswordDTO) throws Exception;
 	
-	LocalDate upgradeCustomerToPrime(CustomerDTO customerDTO) throws EPharmacyException;
+	CustomerDTO upgradeCustomerToPrime(CustomerDTO customerDTO) throws EPharmacyException;
+
+    String authregisterNewCustomer(CustomerDTO customerDTO) throws EPharmacyException;
 	
 }

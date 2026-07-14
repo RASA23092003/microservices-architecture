@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infy.dto.ChangePasswordDTO;
 import com.infy.dto.CustomerAddressDTO;
 import com.infy.dto.CustomerDTO;
+import com.infy.dto.PrimePlansDTO;
 import com.infy.entity.Customer;
 import com.infy.entity.CustomerAddress;
 import com.infy.entity.PasswordHistory;
@@ -42,6 +46,8 @@ public class CustomerServiceImpl implements CustomerService {
 	private PasswordHistoryRepository passwordHistoryRepo;
 	@Autowired
 	private PrimePlansRepository planRepo;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	
 	@Override
@@ -104,7 +110,8 @@ public class CustomerServiceImpl implements CustomerService {
 		Customer customerEntity=objectMapper.convertValue(customerDTO, Customer.class);
 		String hashedPassword = HashingUtility.getHashValue(customerDTO.getPassword());
 		customerEntity.setPassword(hashedPassword);
-		customerEntity.setPlan(new PrimePlans());
+		PrimePlans plan=planRepo.findById(1).orElseThrow(()->new EPharmacyException("CustomerService.PLAN_NOT_FOUND"));
+		customerEntity.setPlan(plan);
 		customerEntity.setHealthCoins(0);
 		// PrimePlans plan=new PrimePlans();
 		// customerEntity.getPlan().setPlanId(0);
@@ -122,8 +129,10 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public CustomerDTO viewCustomer(Integer CustomerId) throws EPharmacyException {
-		Customer customer=customerRepository.findById(CustomerId).orElseThrow(()->new EPharmacyException("CustomerService.NO_CUSTOMER_FOUND"));
+	//@Cacheable(value = "customer", key = "#customerId")
+	public CustomerDTO viewCustomer(Integer customerId) throws EPharmacyException {
+		System.out.println("Fetching customer details for customer id: "+customerId);
+		Customer customer=customerRepository.findById(customerId).orElseThrow(()->new EPharmacyException("CustomerService.NO_CUSTOMER_FOUND"));
 		List<CustomerAddressDTO> customerDTOList=new ArrayList<>();
 		for(CustomerAddress address:customer.getAddressList()){
 			customerDTOList.add(objectMapper.convertValue(address,CustomerAddressDTO.class));
@@ -187,7 +196,8 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public LocalDate upgradeCustomerToPrime(CustomerDTO customerDTO) throws EPharmacyException {
+	//@CachePut(value = "customer", key = "#customerDTO.customerId")
+	public CustomerDTO upgradeCustomerToPrime(CustomerDTO customerDTO) throws EPharmacyException {
 		int planId=customerDTO.getPlan().getPlanId();
 		Customer customer=customerRepository.findById(customerDTO.getCustomerId()).orElseThrow(()->new EPharmacyException("CustomerService.NO_CUSTOMER_FOUND"));
 		if(customer.getPlan()!=null && customer.getPlan().getPlanId()==planId) throw new EPharmacyException("CustomerService.ALREADY_SUBSCRIBED");
@@ -200,6 +210,89 @@ public class CustomerServiceImpl implements CustomerService {
 		else if(planId==2) expiaryDate=LocalDate.now().plusMonths(4);
 		else if(planId==3) expiaryDate=LocalDate.now().plusYears(1);
 		customer.setPlanExpiryDate(expiaryDate);
-		return expiaryDate;
+		List<CustomerAddressDTO> customerDTOList=new ArrayList<>();
+		for(CustomerAddress address:customer.getAddressList()){
+			customerDTOList.add(objectMapper.convertValue(address,CustomerAddressDTO.class));
+		}
+		CustomerDTO customerDto=objectMapper.convertValue(customer, CustomerDTO.class);
+		PrimePlansDTO planDTO=objectMapper.convertValue(plans, PrimePlansDTO.class);
+		customerDto.setPlan(planDTO);
+		customerDto.setAddressList(customerDTOList);
+		return customerDto;
 	}
-}
+
+	@Override
+	public String authregisterNewCustomer(CustomerDTO customerDTO)
+			throws EPharmacyException {
+
+		Customer customer =
+				customerRepository.findByCustomerEmailId(
+						customerDTO.getCustomerEmailId()
+				);
+
+		if (customer != null) {
+			throw new EPharmacyException(
+					"CustomerService.CUSTOMER_ALREADY_EXISTS"
+			);
+		}
+
+
+		if ((LocalDate.now().getYear()
+				- customerDTO.getDateOfBirth().getYear()) < 18) {
+
+			throw new EPharmacyException(
+					"CustomerService.INVALID_DATE"
+			);
+		}
+
+
+		Customer customerEntity =
+				objectMapper.convertValue(
+						customerDTO,
+						Customer.class
+				);
+
+
+		// BCrypt password encryption
+		customerEntity.setPassword(
+				passwordEncoder.encode(
+						customerDTO.getPassword()
+				)
+		);
+
+
+		PrimePlans plan =
+				planRepo.findById(1)
+				.orElseThrow(() ->
+						new EPharmacyException(
+								"CustomerService.PLAN_NOT_FOUND"
+						)
+				);
+
+
+		customerEntity.setPlan(plan);
+
+		customerEntity.setHealthCoins(0);
+
+
+		Integer customerId =
+				customerRepository.save(customerEntity)
+				.getCustomerId();
+
+
+		String successMessage =
+				environment.getProperty(
+						"CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS1"
+				)
+				+ " "
+				+
+				environment.getProperty(
+						"CustomerAPI.CUSTOMER_REGISTRATION_SUCCESS2"
+				)
+				+ " "
+				+ customerId;
+
+
+		return successMessage;
+	}
+	}

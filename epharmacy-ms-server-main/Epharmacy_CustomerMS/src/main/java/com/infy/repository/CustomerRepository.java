@@ -6,6 +6,5 @@ import com.infy.entity.Customer;
 
 public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 	//Write the appropriate methods if required
-	Customer findByCustomerEmailId(String customerEmailId);
-	
+	Customer findByCustomerEmailId(String customerEmailId);	
 }

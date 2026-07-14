@@ -1,5 +1,6 @@
 package com.infy.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 //Write the necessary annotations to validate the fields 
-public class CustomerDTO {
+public class CustomerDTO implements Serializable {
 	private Integer customerId;
 	@Pattern(regexp="^[A-Za-z]+(\\s[A-Za-z]+)*$",message = "{customer.name.invalid}")
 	private String customerName;

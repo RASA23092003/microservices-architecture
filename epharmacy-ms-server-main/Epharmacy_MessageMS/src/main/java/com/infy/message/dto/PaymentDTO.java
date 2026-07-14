@@ -49,4 +49,10 @@ public class PaymentDTO {
 		this.card = card;
 	}
 
+	@Override
+	public String toString() {
+		return "PaymentDTO [paymentId=" + paymentId + ", paymentTime=" + paymentTime + ", amount=" + amount
+				+ ", customerId=" + customerId + ", card=" + card + "]";
+	}
+
 }

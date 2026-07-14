@@ -14,6 +14,11 @@ public class CardDTO {
 	public Integer getCustomerId() {
 		return customerId;
 	}
+	@Override
+	public String toString() {
+		return "CardDTO [cardId=" + cardId + ", nameOnCard=" + nameOnCard + ", cvv=" + cvv + ", expiryDate="
+				+ expiryDate + ", cardType=" + cardType + ", customerId=" + customerId + "]";
+	}
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class CustomerAPI {
 	private Environment environment;
 	static Log logger = LogFactory.getLog(CustomerAPI.class);
 
-	@PostMapping(value = "customer/login")
+	@PostMapping(value = "/customer/login")
 	public ResponseEntity<CustomerDTO> authenticateCustomer(@RequestBody CustomerDTO customerDTO) throws Exception {
 		CustomerDTO customerDTOFromDB = customerService.authenticateCustomer(customerDTO.getCustomerEmailId(),
 				customerDTO.getPassword());
@@ -54,6 +55,7 @@ public class CustomerAPI {
 	}
 
 	@GetMapping("/customer/{customerId}")
+	
 	public ResponseEntity<CustomerDTO> viewCustomer(@PathVariable Integer customerId) throws EPharmacyException {
 		CustomerDTO customer=customerService.viewCustomer(customerId);
 		return new ResponseEntity<>(customer,HttpStatus.OK);
@@ -94,8 +96,8 @@ public class CustomerAPI {
 	}
 	@PutMapping("/customer/upgrade")
 	public ResponseEntity<String> upgradeCustomer(@RequestBody CustomerDTO custDTO) throws Exception {
-		LocalDate expiaryDate=customerService.upgradeCustomerToPrime(custDTO);
-		String successMsg=environment.getProperty("CustomerAPI.UPGRADE_CUSTOMER_SUCCESS")+" Expiry Date: "+expiaryDate;
+		CustomerDTO customer=customerService.upgradeCustomerToPrime(custDTO);
+		String successMsg=environment.getProperty("CustomerAPI.UPGRADE_CUSTOMER_SUCCESS")+" Expiry Date: "+customer.getPlanExpiryDate();
 		return new ResponseEntity<>(successMsg,HttpStatus.OK);
 	}
 }

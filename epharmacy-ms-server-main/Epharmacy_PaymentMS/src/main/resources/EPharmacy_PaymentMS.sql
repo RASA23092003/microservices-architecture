@@ -10,6 +10,32 @@ CREATE TABLE CARD(
 	EXPIRY_DATE DATE,
 	CUSTOMER_ID INT
 );
+-- INSERT INTO CARD (
+--     CARD_ID,
+--     NAME_ON_CARD,
+--     CVV,
+--     CARD_TYPE,
+--     EXPIRY_DATE,
+--     CUSTOMER_ID
+-- ) VALUES
+-- ('6', 'Srk', '111', 'DEBIT_CARD', '2028-01-15', 101),
+-- ('7', 'Srk', '222', 'CREDIT_CARD', '2029-06-20', 101),
+-- ('8', 'Srk', '333', 'DEBIT_CARD', '2030-09-10', 101),
+-- ('9', 'Srk', '444', 'CREDIT_CARD', '2031-12-05', 101),
+-- ('10', 'Srk', '555', 'DEBIT_CARD', '2027-07-18', 101);
+-- INSERT INTO CARD (
+--     CARD_ID,
+--     NAME_ON_CARD,
+--     CVV,
+--     CARD_TYPE,
+--     EXPIRY_DATE,
+--     CUSTOMER_ID
+-- ) VALUES
+
+-- ('2', 'Aamir Khan', '456', 'CREDIT_CARD', '2030-05-15', 102),
+-- ('3', 'Salman Khan', '789', 'DEBIT_CARD', '2028-12-20', 103),
+-- ('4', 'Deepika Padukone', '321', 'CREDIT_CARD', '2031-03-10', 104),
+-- ('5', 'Virat Kohli', '654', 'DEBIT_CARD', '2027-11-25', 105);
 
 CREATE TABLE PAYMENT(
 	PAYMENT_ID INT PRIMARY KEY AUTO_INCREMENT,

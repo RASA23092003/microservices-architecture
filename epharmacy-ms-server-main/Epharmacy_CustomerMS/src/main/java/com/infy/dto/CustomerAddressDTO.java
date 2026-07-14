@@ -1,10 +1,12 @@
 package com.infy.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 //Write the necessary annotations to validate the fields 
-public class CustomerAddressDTO {
+public class CustomerAddressDTO implements Serializable{
 	
 	private Integer addressId;
 	@Pattern(regexp = "(Home|Work|Office)",message="{address.name.notpresent}")

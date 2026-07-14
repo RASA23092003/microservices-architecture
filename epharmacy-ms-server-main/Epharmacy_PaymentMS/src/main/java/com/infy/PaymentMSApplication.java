@@ -16,10 +16,10 @@ public class PaymentMSApplication {
 		SpringApplication.run(PaymentMSApplication.class, args);
 	}
 
-	@Bean
-	public NewTopic paymentTopic() {
-		return TopicBuilder.name("payment-topic").build();
-	}
+	// @Bean
+	// public NewTopic paymentTopic() {
+	// 	return TopicBuilder.name("payment-topic").build();
+	// }
 
 	@Bean
 	public RestTemplate restTemplate() {

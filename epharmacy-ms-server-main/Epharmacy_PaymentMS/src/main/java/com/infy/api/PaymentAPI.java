@@ -40,9 +40,9 @@ public class PaymentAPI {
 	public ResponseEntity<String> makePayment(@RequestBody CardDTO cardDTO,@PathVariable Float amountToPay) throws Exception {
 		Integer paymentId=paymentService.makePayment(cardDTO, amountToPay);
 		String successMsg=environment.getProperty("PaymentAPI.PAYMENT_SUCCESS")+" "+paymentId;
-		// PaymentDTO event=paymentService.getPaymentDetails(paymentId);
-		// Message<PaymentDTO> message=MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, "payment-event").build();
-		// kafkaTemplate.send(message);
+		PaymentDTO event=paymentService.getPaymentDetails(paymentId);
+		Message<PaymentDTO> message=MessageBuilder.withPayload(event).setHeader(KafkaHeaders.TOPIC, "payment-event").build();
+		kafkaTemplate.send(message);
 		//paymentService.sendPayment(event);
 		return new ResponseEntity<>(successMsg,HttpStatus.CREATED);
 	}
@@ -61,6 +61,11 @@ public class PaymentAPI {
     @GetMapping(value = "/payment/view-cards/{customerId}")
 	public ResponseEntity<List<CardDTO>> viewCards(@PathVariable Integer customerId) throws EPharmacyException {
 		List<CardDTO> cards=paymentService.viewCards(customerId);
+		for(CardDTO c:cards) {
+			Message<CardDTO> message=MessageBuilder.withPayload(c).setHeader(KafkaHeaders.TOPIC, "card-event").build();
+			kafkaTemplate.send(message);
+		}
+		//kafkaTemplate.send("card-topic", null);
 		return new ResponseEntity<>(cards,HttpStatus.OK);
 	}
 

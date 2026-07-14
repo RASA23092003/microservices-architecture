@@ -1,6 +1,9 @@
 package com.infy.dto;
+
+import java.io.Serializable;
+
 //Write the necessary annotations to validate the fields 
-public class PrimePlansDTO {
+public class PrimePlansDTO implements Serializable{
 	
 	private Integer planId;
 	private String planName;

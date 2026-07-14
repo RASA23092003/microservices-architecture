@@ -2,7 +2,9 @@ package com.infy.api;
 
 import java.util.List;
 
+import org.hibernate.annotations.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class OrderAPI {
 	Environment environment;
 
 	@GetMapping(value = "/order/view-orders/customer/{customerId}")
+	@Cacheable(value = "orders", key = "#customerId")
 	ResponseEntity<List<OrderDTO>> viewOrders(@PathVariable Integer customerId) throws EPharmacyException {
 		return new ResponseEntity<List<OrderDTO>>(orderService.viewOrders(customerId), HttpStatus.OK);
 	}
